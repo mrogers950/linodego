@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/go-resty/resty/v2"
+	corev1 "k8s.io/api/core/v1"
 )
 
 // LKELinodeStatus constants start with LKELinode and include
@@ -45,16 +46,20 @@ type LKENodePool struct {
 	Disks   []LKENodePoolDisk   `json:"disks"`
 	Linodes []LKENodePoolLinode `json:"nodes"`
 	Tags    []string            `json:"tags"`
+	Labels  []map[string]string `json:"labels"`
+	Taints  []corev1.Taint      `json:"taints"`
 
 	Autoscaler LKENodePoolAutoscaler `json:"autoscaler"`
 }
 
 // LKENodePoolCreateOptions fields are those accepted by CreateLKENodePool
 type LKENodePoolCreateOptions struct {
-	Count int               `json:"count"`
-	Type  string            `json:"type"`
-	Disks []LKENodePoolDisk `json:"disks"`
-	Tags  []string          `json:"tags"`
+	Count  int                 `json:"count"`
+	Type   string              `json:"type"`
+	Disks  []LKENodePoolDisk   `json:"disks"`
+	Tags   []string            `json:"tags"`
+	Labels []map[string]string `json:"labels"`
+	Taints []corev1.Taint      `json:"taints"`
 
 	Autoscaler *LKENodePoolAutoscaler `json:"autoscaler,omitempty"`
 }
@@ -63,6 +68,10 @@ type LKENodePoolCreateOptions struct {
 type LKENodePoolUpdateOptions struct {
 	Count int       `json:"count,omitempty"`
 	Tags  *[]string `json:"tags,omitempty"`
+	// Need pointer?
+	Labels *[]map[string]string `json:"labels,omitempty"`
+	// Need pointer?
+	Taints *[]corev1.Taint `json:"taints,omitempty"`
 
 	Autoscaler *LKENodePoolAutoscaler `json:"autoscaler,omitempty"`
 }
@@ -73,6 +82,8 @@ func (l LKENodePool) GetCreateOptions() (o LKENodePoolCreateOptions) {
 	o.Count = l.Count
 	o.Disks = l.Disks
 	o.Tags = l.Tags
+	o.Labels = l.Labels
+	o.Taints = l.Taints
 	o.Autoscaler = &l.Autoscaler
 	return
 }
@@ -81,6 +92,10 @@ func (l LKENodePool) GetCreateOptions() (o LKENodePoolCreateOptions) {
 func (l LKENodePool) GetUpdateOptions() (o LKENodePoolUpdateOptions) {
 	o.Count = l.Count
 	o.Tags = &l.Tags
+	// Need pointer?
+	o.Labels = &l.Labels
+	// Need pointer?
+	o.Taints = &l.Taints
 	o.Autoscaler = &l.Autoscaler
 	return
 }
