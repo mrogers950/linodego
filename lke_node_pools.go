@@ -46,7 +46,7 @@ type LKENodePool struct {
 	Disks   []LKENodePoolDisk   `json:"disks"`
 	Linodes []LKENodePoolLinode `json:"nodes"`
 	Tags    []string            `json:"tags"`
-	Labels  []map[string]string `json:"labels"`
+	Labels  map[string]string   `json:"labels"`
 	Taints  []corev1.Taint      `json:"taints"`
 
 	Autoscaler LKENodePoolAutoscaler `json:"autoscaler"`
@@ -54,12 +54,12 @@ type LKENodePool struct {
 
 // LKENodePoolCreateOptions fields are those accepted by CreateLKENodePool
 type LKENodePoolCreateOptions struct {
-	Count  int                 `json:"count"`
-	Type   string              `json:"type"`
-	Disks  []LKENodePoolDisk   `json:"disks"`
-	Tags   []string            `json:"tags"`
-	Labels []map[string]string `json:"labels"`
-	Taints []corev1.Taint      `json:"taints"`
+	Count  int               `json:"count"`
+	Type   string            `json:"type"`
+	Disks  []LKENodePoolDisk `json:"disks"`
+	Tags   []string          `json:"tags"`
+	Labels map[string]string `json:"labels"`
+	Taints []corev1.Taint    `json:"taints"`
 
 	Autoscaler *LKENodePoolAutoscaler `json:"autoscaler,omitempty"`
 }
@@ -69,7 +69,7 @@ type LKENodePoolUpdateOptions struct {
 	Count int       `json:"count,omitempty"`
 	Tags  *[]string `json:"tags,omitempty"`
 	// Need pointer?
-	Labels *[]map[string]string `json:"labels,omitempty"`
+	Labels *map[string]string `json:"labels,omitempty"`
 	// Need pointer?
 	Taints *[]corev1.Taint `json:"taints,omitempty"`
 
